@@ -1,0 +1,26 @@
+<div>
+  <div>
+    <div>Firstname</div>
+    <input [(ngModel)]="firstname" type="text" />
+  </div>
+  <div>
+    <div>Lastname</div>
+    <input [(ngModel)]="lastname" type="text" />
+  </div>
+  <div>
+    <div>Email</div>
+    <input [(ngModel)]="email" type="text" />
+  </div>
+  <br />
+  <button (click)="addUser()">Add User</button>
+</div>
+
+<br />
+<br />
+<br />
+
+<div *ngFor="let userItem of userItems">
+  <div>{{ userItem.firstname }}</div>
+  <div>{{ userItem.lastname }}</div>
+  <div>{{ userItem.email }}</div>
+</div>
