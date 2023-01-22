@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func InitializeRouter() {
@@ -19,8 +20,23 @@ func InitializeRouter() {
 	s.HandleFunc("/users/{id}", UpdateUser).Methods("PUT")
 	s.HandleFunc("/users/{id}", DeleteUser).Methods("DELETE")
 
+	// Without CORS
+	// log.Println("Starting server on port 9000...");
+	// log.Fatal(http.ListenAndServe(":9000", r))
+
+	// *** Testing for correcting CORS error
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowCredentials: true,
+		AllowedMethods: []string{"GET", "POST", "PUT", "HEAD", "OPTIONS"},
+		AllowedHeaders: []string{"Accept", "Accept-Language", "Content-Type", "Content-Language", "Origin"},
+	})
+	handler := c.Handler(r)
+
+
 	log.Println("Starting server on port 9000...");
-	log.Fatal(http.ListenAndServe(":9000", r))
+	// log.Println(os.Getenv("PORT"));
+	log.Fatal(http.ListenAndServe(":9000", handler))
 }
 
 func main() {

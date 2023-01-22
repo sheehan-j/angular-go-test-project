@@ -1,59 +1,48 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-interface userItem {
-  firstname: string;
-  lastname: string;
-  email: string;
-}
+import { IUserItem } from './user.model';
+import { UserService } from './user.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  // These are bound to the inputs in the app component HTML with ngModel
-  public firstname = '';
-  public lastname = '';
-  public email = '';
+    // These are bound to the inputs in the app component HTML with ngModel
+    public firstname = '';
+    public lastname = '';
+    public email = '';
 
-  public userItems: userItem[] = [
-    {
-      firstname: 'Jordan',
-      lastname: 'Sheehan',
-      email: 'js@gmail.com',
-    },
-    {
-      firstname: 'John',
-      lastname: 'Doe',
-      email: 'jd@gmail.com',
-    },
-  ];
+    public userItems: IUserItem[] | undefined = [];
 
-  constructor(private httpClient: HttpClient) {}
+    constructor(private _http: HttpClient, private _userService: UserService) {}
 
-  async ngOnInit() {
-    await this.loadUsers();
-  }
+    ngOnInit() {
+        this._userService
+            .getAllUsers()
+            .subscribe((data: IUserItem[]) => (this.userItems = data));
+    }
 
-  async loadUsers() {
-    const results = await this.httpClient
-      .get<userItem[]>('/api/users')
-      .toPromise();
-  }
+    loadUsers() {
+        console.log('loadUsers called.');
 
-  async addUser() {
-    await this.httpClient
-      .post('/api/users', {
-        firstname: this.firstname,
-        lastname: this.lastname,
-        email: this.email,
-      })
-      .toPromise();
+        this._userService
+            .getAllUsers()
+            .subscribe((data: IUserItem[]) => (this.userItems = data));
+    }
 
-    this.firstname = '';
-    this.lastname = '';
-    this.email = '';
-  }
+    async addUser() {
+        const result = await this._userService.addUser({
+            firstname: this.firstname,
+            lastname: this.lastname,
+            email: this.email,
+        });
+
+        await this.loadUsers();
+
+        this.firstname = '';
+        this.lastname = '';
+        this.email = '';
+    }
 }

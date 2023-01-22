@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "go-api-test": {
+    "go-api-test-client": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/go-api-test",
+            "outputPath": "dist/go-api-test-client",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "go-api-test:build:production"
+              "browserTarget": "go-api-test-client:build:production"
             },
             "development": {
-              "browserTarget": "go-api-test:build:development"
+              "browserTarget": "go-api-test-client:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "go-api-test:build"
+            "browserTarget": "go-api-test-client:build"
           }
         },
         "test": {
