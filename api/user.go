@@ -5,15 +5,17 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/glebarez/sqlite"
 	"github.com/gorilla/mux"
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
 var err error
 // For some reason adding parseTime parameter to URL fixed returning null records?? 
-const DNS = "root:VDw846#dHPj@tcp(127.0.0.1:3306)/go-api-db?parseTime=true"
+// const DNS = "root:VDw846#dHPj@tcp(127.0.0.1:3306)/go-api-db?parseTime=true"
+
+const DB_PATH = "../db/usersdb.db";
 
 type User struct {
 	gorm.Model // This line makes this struct as the model for GORM
@@ -23,7 +25,7 @@ type User struct {
 }
 
 func InitialMigration() {
-	DB, err = gorm.Open(mysql.Open(DNS), &gorm.Config{})
+	DB, err = gorm.Open(sqlite.Open(DB_PATH), &gorm.Config{})
 
 	if err != nil {
 		fmt.Println(err)
